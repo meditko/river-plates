@@ -2,389 +2,292 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <!-- السطر ده هو السر في ضبط الشاشة على الموبايل -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>River Store | متجر ريفر</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River Store | متجر ريفر الاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; } /* يمنع خروج العناصر عن حواف الموبايل */
+        * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; transition: all 0.25s ease; }
+        body { background-color: #0b0f19; color: #f8fafc; padding-bottom: 80px; }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        /* الهيدر العلوي */
         header {
-            background-color: #0f172a;
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 1000;
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .logo { font-size: 22px; font-weight: bold; color: #38bdf8; }
-        
-        .header-btns { display: flex; gap: 10px; align-items: center; }
-        
-        .cart-status { 
-            background-color: #38bdf8; 
-            color: #0f172a; 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            font-weight: bold; 
-            cursor: pointer;
-            font-size: 14px;
+        .logo-container { position: absolute; left: 50%; transform: translateX(-50%); text-align: center; }
+        .logo {
+            font-size: 32px; font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 3px; text-decoration: none;
         }
-        
+
+        .cart-status {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white; padding: 8px 16px; border-radius: 25px; font-weight: 700; cursor: pointer;
+        }
+
         .btn-admin-login {
-            background-color: #1e293b;
-            color: white;
-            border: 1px solid #475569;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
+            background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600;
         }
 
-        .container { max-width: 900px; margin: 15px auto; padding: 0 15px; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 15px; }
 
-        /* 🔒 لوحة التحكم */
         #admin-panel {
-            display: none;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            border: 2px solid #10b981;
+            display: none; background: #1e293b; padding: 22px; border-radius: 18px; margin-bottom: 30px;
+            border: 1px solid #10b981;
         }
-
-        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
-        .btn-close { background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
         .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        .btn-submit { background-color: #10b981; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; color: #94a3b8; font-size: 13px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; outline: none; }
+        .btn-submit { background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
 
-        /* كارت المنتج - متجاوب للموبايل */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+
         .product-card {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            background: #1e293b; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08); cursor: pointer;
         }
+        .product-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .product-card img { width: 100%; height: 220px; object-fit: cover; display: block; background: #0f172a; }
+        .product-card-body { padding: 15px; text-align: center; }
+        .product-card-title { font-size: 16px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+        .product-card-price { color: #38bdf8; font-size: 17px; font-weight: 800; }
+        .click-hint { font-size: 11px; color: #94a3b8; margin-top: 8px; display: block; }
 
-        .product-header { 
-            display: flex; 
-            gap: 15px; 
-            align-items: center; 
+        /* Modal Details */
+        .details-modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px);
         }
-
-        .product-img { 
-            width: 100px; 
-            height: 100px; 
-            object-fit: cover; 
-            border-radius: 8px; 
-            border: 1px solid #e5e7eb; 
-            flex-shrink: 0;
+        .details-content {
+            background: #1e293b; margin: 5% auto; padding: 24px; border-radius: 20px; width: 90%; max-width: 550px;
+            border: 1px solid rgba(255, 255, 255, 0.1); max-height: 85vh; overflow-y: auto; position: relative;
         }
+        .details-img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
 
-        .product-info h2 { font-size: 18px; margin: 0 0 5px 0; }
-        .price { color: #0284c7; font-size: 18px; font-weight: bold; }
-        .stars { color: #ffa41c; font-size: 14px; margin: 3px 0; }
-
-        .btn-add { 
-            background-color: #38bdf8; 
-            color: #0f172a; 
-            border: none; 
-            padding: 8px 15px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-top: 8px; 
-            width: 100%;
+        /* ChatBot */
+        .chatbot-toggle-btn {
+            position: fixed; bottom: 25px; left: 25px; background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white; border: none; padding: 14px 22px; border-radius: 35px; font-weight: 800; cursor: pointer; z-index: 1001;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
         }
-
-        /* قسم الريفيوهات للموبايل */
-        .reviews-section { margin-top: 15px; border-top: 1px solid #eee; padding-top: 12px; }
-        
-        .review-item { 
-            background: #f9fafb; 
-            padding: 8px 12px; 
-            border-radius: 6px; 
-            margin-bottom: 8px; 
-            font-size: 13px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            gap: 10px;
+        .chatbot-box {
+            display: none; position: fixed; bottom: 85px; left: 25px; width: calc(100% - 50px); max-width: 340px;
+            background: #1e293b; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.12); overflow: hidden;
         }
+        .chatbot-header { background: #075e54; color: white; padding: 14px; font-weight: bold; font-size: 14px; display: flex; justify-content: space-between; }
+        .chatbot-messages { height: 220px; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #0f172a; font-size: 13px; }
+        .chat-msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; }
+        .chat-msg.bot { background: #334155; color: white; align-self: flex-start; }
+        .chat-msg.user { background: #0284c7; color: white; align-self: flex-end; }
+        .chatbot-input-area { display: flex; padding: 8px; background: #1e293b; gap: 6px; }
+        .chatbot-input-area input { flex: 1; background: #0f172a; border: 1px solid #334155; padding: 10px; color: white; border-radius: 8px; outline: none; }
+        .chatbot-input-area button { background: #25d366; color: white; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
 
-        .btn-delete-rev {
-            background: #fee2e2;
-            color: #ef4444;
-            border: 1px solid #fca5a5;
-            padding: 3px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .add-review-box { 
-            display: flex; 
-            gap: 8px; 
-            margin-top: 10px; 
-            flex-wrap: wrap;
-        }
-        .add-review-box input { flex: 1; min-width: 140px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
-        .add-review-box select { padding: 8px; border: 1px solid #ccc; border-radius: 5px; background: white; }
-        .add-review-box button { background: #0f172a; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-
-        /* تعديلات خفيفة للموبايل للشاشات الأصغر من 600px */
-        @media (max-width: 600px) {
-            .product-header { flex-direction: column; text-align: center; }
-            .product-img { width: 100%; height: 180px; }
-            .add-review-box { flex-direction: column; }
-            .add-review-box input, .add-review-box select, .add-review-box button { width: 100%; }
-        }
-
-        /* 🔔 إشعار الإضافة للسلة */
-        #notification {
-            visibility: hidden;
-            width: 90%;
-            max-width: 300px;
-            background-color: #10b981;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 12px;
-            position: fixed;
-            z-index: 2000;
-            left: 50%;
-            bottom: 20px;
-            transform: translateX(-50%);
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        #notification.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 20px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 20px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        /* 🛒 نافذة السلة */
-        .modal { display: none; position: fixed; z-index: 1500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: white; margin: 15% auto; padding: 20px; border-radius: 10px; width: 90%; max-width: 450px; }
-        .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 8px 0; }
-
-        /* 💬 الشات المباشر عبر واتساب */
-        .chat-toggle-btn { position: fixed; bottom: 15px; left: 15px; background: #25d366; color: white; border: none; padding: 10px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; z-index: 1001; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 13px; }
-        .chat-widget { display: none; position: fixed; bottom: 65px; left: 15px; width: calc(100% - 30px); max-width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; overflow: hidden; }
-        .chat-header { background: #075e54; color: white; padding: 10px; font-weight: bold; text-align: center; font-size: 14px; }
-        .chat-body { height: 100px; padding: 10px; font-size: 12px; background: #f9fafb; }
-        .chat-input { display: flex; border-top: 1px solid #eee; padding: 5px; background: #fff; }
-        .chat-input input { flex: 1; border: 1px solid #ddd; padding: 8px; outline: none; border-radius: 4px; font-size: 13px; }
-        .chat-input button { background: #25d366; color: white; border: none; padding: 8px 12px; margin-right: 5px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 13px; }
+        /* Cart */
+        .cart-modal { display: none; position: fixed; z-index: 1500; left: 0; top: 0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.8); }
+        .cart-content { background: #1e293b; margin: 10% auto; padding: 22px; border-radius: 18px; width: 90%; max-width: 450px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 0; }
+        .btn-close { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر -->
     <header>
-        <div class="logo">RIVER 🌊</div>
-        <div class="header-btns">
-            <button class="btn-admin-login" onclick="loginAdmin()">التاجر ⚙️</button>
-            <div class="cart-status" onclick="openCartModal()">🛒 السلة: <b id="cart-count">0</b></div>
+        <button class="btn-admin-login" onclick="loginAdmin()">التاجر ⚙️</button>
+        <div class="logo-container">
+            <a href="#" class="logo">RIVER 🌊</a>
         </div>
+        <div class="cart-status" onclick="openCartModal()">🛒 <span id="cart-count">0</span></div>
     </header>
 
     <div class="container">
 
-        <!-- 🔒 لوحة تحكم التاجر -->
         <div id="admin-panel">
-            <div class="admin-header">
-                <h3 style="margin: 0; color: #10b981;">⚙️ لوحة التاجر</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+                <h3 style="color: #10b981;">⚙️ لوحة التاجر لإضافة منتج</h3>
                 <button class="btn-close" onclick="closeAdmin()">إغلاق ✖</button>
             </div>
-            <div class="form-group">
-                <label>اسم المنتج:</label>
-                <input type="text" id="p-name" placeholder="مثال: ساعة ذكية">
-            </div>
-            <div class="form-group">
-                <label>السعر (بالجنيه):</label>
-                <input type="number" id="p-price" placeholder="مثال: 350">
-            </div>
-            <div class="form-group">
-                <label>رابط الصورة (اختياري):</label>
-                <input type="text" id="p-image" placeholder="ضع رابط الصورة هنا">
-            </div>
-            <button class="btn-submit" onclick="addNewProduct()">إضافة المنتج 🚀</button>
+            <div class="form-group"><label>اسم المنتج:</label><input type="text" id="p-name"></div>
+            <div class="form-group"><label>السعر:</label><input type="number" id="p-price"></div>
+            <div class="form-group"><label>الوصف:</label><textarea id="p-desc"></textarea></div>
+            <div class="form-group"><label>اسم أو رابط الصورة:</label><input type="text" id="p-image"></div>
+            <button class="btn-submit" onclick="addNewProduct()">إضافة للمتجر 🚀</button>
         </div>
 
-        <!-- 🛍️ المنتجات -->
-        <h2 style="font-size: 20px;">🛍️ المنتجات المتاحة</h2>
-        <div id="products-list"></div>
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #e2e8f0;">🛍️ المعرض المتاح (اضغط على الصورة للتفاصيل)</h2>
+        <div class="products-grid" id="products-grid"></div>
     </div>
 
-    <!-- 🔔 إشعار الإضافة للسلة -->
-    <div id="notification">تمت إضافة المنتج للسلة! 🛒✨</div>
+    <!-- Modal Details -->
+    <div id="detailsModal" class="details-modal">
+        <div class="details-content">
+            <button class="btn-close" style="position: absolute; left: 15px; top: 15px;" onclick="closeDetailsModal()">✖</button>
+            <img id="modal-img" class="details-img" src="" alt="المنتج">
+            <h2 id="modal-title" style="color: white; font-size: 20px; margin-bottom: 6px;"></h2>
+            <div style="color: #f59e0b; margin-bottom: 8px;">★★★★★ (5.0)</div>
+            <div id="modal-price" style="color: #38bdf8; font-size: 22px; font-weight: 800; margin-bottom: 12px;"></div>
+            <p id="modal-desc" style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 18px; background: #0f172a; padding: 12px; border-radius: 10px;"></p>
+            <button id="modal-add-btn" style="background: #38bdf8; color: #0f172a; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 800; width: 100%; font-size: 15px; margin-bottom: 20px;">أضف إلى السلة 🛒</button>
+        </div>
+    </div>
 
-    <!-- 🛒 نافذة السلة -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; padding-bottom:10px;">
-                <h3 style="margin:0;">🛒 محتويات السلة</h3>
+    <!-- ChatBot -->
+    <button class="chatbot-toggle-btn" onclick="toggleChatbot()">🤖 المساعد الذكي</button>
+    <div class="chatbot-box" id="chatbot-box">
+        <div class="chatbot-header">
+            <span>🤖 River Bot</span>
+            <span style="cursor:pointer;" onclick="toggleChatbot()">✖</span>
+        </div>
+        <div class="chatbot-messages" id="chat-messages">
+            <div class="chat-msg bot">مرحباً بك في River Store! 🌊 كيف يمكنني مساعدتك؟ (استفسار، عروض، أو الدعم والشكاوى).</div>
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" id="bot-input" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendBotMessage()">
+            <button onclick="sendBotMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
+                <h3 style="color: white;">🛒 سلة المشتريات</h3>
                 <button class="btn-close" onclick="closeCartModal()">✖</button>
             </div>
             <div id="cart-items-list" style="margin: 15px 0;"></div>
-            <h3 style="text-align:left; font-size: 16px;">الإجمالي: <span id="cart-total" style="color:#0284c7;">0</span> ج.م</h3>
-            <button style="background:#25d366; color:white; border:none; width:100%; padding:12px; border-radius:5px; font-weight:bold; cursor:pointer; font-size: 15px;" onclick="checkoutWhatsApp()">إتمام الشراء عبر الواتساب 📲</button>
-        </div>
-    </div>
-
-    <!-- 💬 الشات المباشر عبر واتساب -->
-    <button class="chat-toggle-btn" onclick="toggleChat()">💬 تواصل معنا</button>
-    <div class="chat-widget" id="chat-box">
-        <div class="chat-header">خدمة عملاء River 🟢</div>
-        <div class="chat-body">
-            <div style="color: #333; background: #e2e8f0; padding: 8px; border-radius: 5px;">أهلاً بك! اكتب استفسارك وسيتم تحويلك مباشرة لمحادثة الدعم.</div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="chat-msg-input" placeholder="اكتب استفسارك...">
-            <button onclick="sendWhatsAppChat()">إرسال 📲</button>
+            <h3 style="font-size: 16px; color: #e2e8f0; margin-bottom: 15px;">الإجمالي: <span id="cart-total" style="color:#38bdf8;">0</span> ج.م</h3>
+            <button style="background:#25d366; color:white; border:none; width:100%; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;" onclick="checkoutWhatsApp()">إتمام الشراء عبر الواتساب 📲</button>
         </div>
     </div>
 
     <script>
-        const MY_PHONE_NUMBER = "201099207307"; 
-        const ADMIN_PASSWORD = "1234";
-
-        let cart = JSON.parse(localStorage.getItem('river_cart')) || [];
-        let products = JSON.parse(localStorage.getItem('river_products')) || [
+        const MY_PHONE_NUMBER = "01099207307"; 
+        let cart = JSON.parse(localStorage.getItem('river_cart_final')) || [];
+        
+        // المنتجات مع روابط الصور المباشرة وروابط أونلاين احتياطية
+        let products = JSON.parse(localStorage.getItem('river_products_final')) || [
             {
                 id: 1,
-                name: "سماعة بلوتوث احترافية",
-                price: 450,
-                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300",
-                reviews: []
+                name: "كلب هاسكي سيبيري أصيل",
+                price: 9500,
+                desc: "كلب هاسكي سيبيري تمتاز بالعيون الملونة والذكاء العالي، مطعم بالكامل مع شهادة صحية.",
+                image: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500"
+            },
+            {
+                id: 2,
+                name: "سيارة سكودا كودياك 2024",
+                price: 1850000,
+                desc: "سيارة Skoda Kodiaq المذهلة، لون أحمر ملكي، كاملة المواصفات بانوراما وأعلى فئة.",
+                image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500"
+            },
+            {
+                id: 3,
+                name: "سماعات Apple AirPods Pro 2",
+                price: 8900,
+                desc: "سماعة أبل ايربودز برو الجيل الثاني مع خاصية العزل الصوتي الفائق والعلبة اللاسلكية.",
+                image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500"
             }
         ];
 
-        function renderProducts() {
-            let list = document.getElementById('products-list');
-            list.innerHTML = '';
-            
-            products.forEach((prod, pIndex) => {
-                let reviewsHtml = '';
-                prod.reviews.forEach((rev, rIndex) => {
-                    let starsText = "★".repeat(rev.stars) + "☆".repeat(5 - rev.stars);
-                    reviewsHtml += `
-                        <div class="review-item">
-                            <div><b>عميل:</b> ${rev.text} <span style="color:#ffa41c;">${starsText}</span></div>
-                            <button class="btn-delete-rev" onclick="deleteReview(${pIndex}, ${rIndex})">حذف 🗑️</button>
-                        </div>`;
-                });
-
-                list.innerHTML += `
-                    <div class="product-card">
-                        <div class="product-header">
-                            <img class="product-img" src="${prod.image}" alt="${prod.name}">
-                            <div class="product-info" style="width: 100%;">
-                                <h2>${prod.name}</h2>
-                                <div class="stars">★★★★★ (5.0)</div>
-                                <div class="price">${prod.price} ج.م</div>
-                                <button class="btn-add" onclick="addToCart('${prod.name}', ${prod.price})">أضف إلى السلة 🛒</button>
-                            </div>
-                        </div>
-                        <div class="reviews-section">
-                            <b>آراء العملاء:</b>
-                            ${reviewsHtml}
-                            <div class="add-review-box">
-                                <input type="text" id="rev-input-${pIndex}" placeholder="اكتب رأيك...">
-                                <select id="rev-stars-${pIndex}">
-                                    <option value="5">⭐⭐⭐⭐⭐ (5)</option>
-                                    <option value="4">★★★★☆ (4)</option>
-                                    <option value="3">★★★☆☆ (3)</option>
-                                    <option value="2">★★☆☆☆ (2)</option>
-                                    <option value="1">★☆☆☆☆ (1)</option>
-                                </select>
-                                <button onclick="addReview(${pIndex})">إرسال</button>
-                            </div>
+        function renderProductsGrid() {
+            let grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            products.forEach((prod, index) => {
+                grid.innerHTML += `
+                    <div class="product-card" onclick="openDetailsModal(${index})">
+                        <img src="${prod.image}" alt="${prod.name}">
+                        <div class="product-card-body">
+                            <div class="product-card-title">${prod.name}</div>
+                            <div class="product-card-price">${prod.price.toLocaleString()} ج.م</div>
+                            <span class="click-hint">اضغط لمعاينة التفاصيل ⭐</span>
                         </div>
                     </div>
                 `;
             });
-            document.getElementById('cart-count').innerText = cart.length;
+            updateCartCount();
         }
 
-        function deleteReview(pIndex, rIndex) {
-            products[pIndex].reviews.splice(rIndex, 1);
-            localStorage.setItem('river_products', JSON.stringify(products));
-            renderProducts();
+        function openDetailsModal(index) {
+            let prod = products[index];
+            document.getElementById('modal-img').src = prod.image;
+            document.getElementById('modal-title').innerText = prod.name;
+            document.getElementById('modal-price').innerText = prod.price.toLocaleString() + " ج.م";
+            document.getElementById('modal-desc').innerText = prod.desc || "لا يوجد وصف إضافي حالياً.";
+            document.getElementById('modal-add-btn').onclick = function() {
+                addToCart(prod.name, prod.price);
+                closeDetailsModal();
+            };
+            document.getElementById('detailsModal').style.display = 'block';
         }
 
-        function addNewProduct() {
-            let name = document.getElementById('p-name').value;
-            let price = parseFloat(document.getElementById('p-price').value);
-            let image = document.getElementById('p-image').value || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300";
+        function closeDetailsModal() { document.getElementById('detailsModal').style.display = 'none'; }
 
-            if (name && price) {
-                products.push({ id: Date.now(), name, price, image, reviews: [] });
-                localStorage.setItem('river_products', JSON.stringify(products));
-                renderProducts();
-                
-                document.getElementById('p-name').value = '';
-                document.getElementById('p-price').value = '';
-                document.getElementById('p-image').value = '';
-                alert('تمت إضافة المنتج بنجاح! 🚀');
+        function toggleChatbot() {
+            let box = document.getElementById('chatbot-box');
+            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function sendBotMessage() {
+            let input = document.getElementById('bot-input');
+            let text = input.value.trim();
+            if (!text) return;
+            addChatMessage(text, 'user');
+            input.value = '';
+            setTimeout(() => { addChatMessage(getBotReply(text), 'bot'); }, 400);
+        }
+
+        function addChatMessage(msg, sender) {
+            let container = document.getElementById('chat-messages');
+            let msgDiv = document.createElement('div');
+            msgDiv.className = `chat-msg ${sender}`;
+            msgDiv.innerHTML = msg;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function getBotReply(msg) {
+            let lower = msg.toLowerCase();
+            if (lower.includes("تواصل") || lower.includes("شكوى") || lower.includes("رقم") || lower.includes("شكاوي") || lower.includes("دعم")) {
+                return `للتواصل المباشر مع إدارة المتجر أو الشكاوى، يرجى الاتصال بنا على:<br><br>📞 <b><a href="tel:${MY_PHONE_NUMBER}" style="color:#38bdf8;">${MY_PHONE_NUMBER}</a></b><br><br><a href="https://wa.me/2${MY_PHONE_NUMBER}" target="_blank" style="color:#25d366; font-weight:bold;">المحادثة المباشرة عبر الواتساب 📲</a>`;
             }
-        }
-
-        function addReview(pIndex) {
-            let input = document.getElementById(`rev-input-${pIndex}`);
-            let stars = document.getElementById(`rev-stars-${pIndex}`).value;
-            
-            if (input.value.trim() !== "") {
-                products[pIndex].reviews.push({ text: input.value, stars: parseInt(stars) });
-                localStorage.setItem('river_products', JSON.stringify(products));
-                renderProducts();
-            }
+            return "مرحباً بك! اضغط على صورة أي منتج لعرض تفاصيله وسعره كاملة. 😊";
         }
 
         function addToCart(title, price) {
-            cart.push({ title, price });
-            localStorage.setItem('river_cart', JSON.stringify(cart));
-            document.getElementById('cart-count').innerText = cart.length;
-            
-            let notif = document.getElementById("notification");
-            notif.className = "show";
-            setTimeout(() => { notif.className = notif.className.replace("show", ""); }, 3000);
+            let item = cart.find(i => i.title === title);
+            if (item) item.quantity += 1;
+            else cart.push({ title, price, quantity: 1 });
+            localStorage.setItem('river_cart_final', JSON.stringify(cart));
+            updateCartCount();
+            alert("تمت الإضافة للسلة بنجاح! 🛒");
+        }
+
+        function updateCartCount() {
+            let total = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = total;
         }
 
         function openCartModal() {
             let list = document.getElementById('cart-items-list');
             let total = 0;
             if (cart.length === 0) {
-                list.innerHTML = `<p style="color:#777; text-align:center;">السلة فارغة حالياً.</p>`;
+                list.innerHTML = `<p style="color:#94a3b8; text-align:center;">السلة فارغة حالياً.</p>`;
             } else {
                 list.innerHTML = '';
-                cart.forEach(item => {
-                    total += item.price;
-                    list.innerHTML += `<div class="cart-item"><span>${item.title}</span><b>${item.price} ج.م</b></div>`;
+                cart.forEach((item) => {
+                    let subTotal = item.price * item.quantity;
+                    total += subTotal;
+                    list.innerHTML += `<div class="cart-item"><div><b>${item.title}</b> (${item.quantity})</div><div>${subTotal.toLocaleString()} ج.م</div></div>`;
                 });
             }
-            document.getElementById('cart-total').innerText = total;
+            document.getElementById('cart-total').innerText = total.toLocaleString();
             document.getElementById('cartModal').style.display = 'block';
         }
 
@@ -392,38 +295,30 @@
 
         function checkoutWhatsApp() {
             if (cart.length === 0) return alert("السلة فارغة!");
-            let msg = "مرحباً River Store! أريد طلب المشتريات التالية:%0A";
-            let total = 0;
-            cart.forEach(item => {
-                msg += `- ${item.title} (${item.price} ج.م)%0A`;
-                total += item.price;
-            });
-            msg += `%0A*الإجمالي:* ${total} ج.م`;
-            window.open(`https://wa.me/${MY_PHONE_NUMBER}?text=${msg}`, '_blank');
-        }
-
-        function sendWhatsAppChat() {
-            let input = document.getElementById('chat-msg-input');
-            if (input.value.trim() !== "") {
-                let msg = `استفسار من متجر River:%0A${input.value}`;
-                window.open(`https://wa.me/${MY_PHONE_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-                input.value = "";
-            }
+            let msg = "مرحباً River Store! أريد شراء الطلبات التالية:%0A";
+            cart.forEach(item => { msg += `- ${item.title} (العدد: ${item.quantity})%0A`; });
+            window.open(`https://wa.me/2${MY_PHONE_NUMBER}?text=${msg}`, '_blank');
         }
 
         function loginAdmin() {
-            let password = prompt("من فضلك أدخل كلمة سر التاجر:");
-            if (password === ADMIN_PASSWORD) document.getElementById('admin-panel').style.display = 'block';
-            else if (password !== null) alert("كلمة السر غير صحيحة ❌");
+            if (prompt("كلمة سر التاجر:") === "1234") document.getElementById('admin-panel').style.display = 'block';
         }
         function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
-        function toggleChat() { 
-            let box = document.getElementById('chat-box');
-            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+
+        function addNewProduct() {
+            let name = document.getElementById('p-name').value;
+            let price = parseFloat(document.getElementById('p-price').value);
+            let desc = document.getElementById('p-desc').value;
+            let image = document.getElementById('p-image').value;
+            if (name && price) {
+                products.push({ id: Date.now(), name, price, desc, image });
+                localStorage.setItem('river_products_final', JSON.stringify(products));
+                renderProductsGrid();
+                closeAdmin();
+            }
         }
 
-        renderProducts();
+        renderProductsGrid();
     </script>
-
 </body>
 </html>
